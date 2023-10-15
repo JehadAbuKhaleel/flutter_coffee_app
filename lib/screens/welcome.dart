@@ -1,4 +1,3 @@
-import 'package:flutter_coffee_app/commonComponents/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -69,8 +68,7 @@ class _WelcomeState extends State<Welcome> {
                           color: Colors.red,
                         ),
                         label: const Text('Continue with Gmail'),
-                        onPressed: () =>
-                            Navigator.pushNamed(context, Routes.home),
+                        onPressed: () => Navigator.pushNamed(context, "/Home"),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.white,
                           foregroundColor: Colors.black,

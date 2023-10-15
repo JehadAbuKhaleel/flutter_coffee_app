@@ -1,6 +1,6 @@
 import 'package:flutter_coffee_app/screens/Welcome.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_coffee_app/commonComponents/app_routes.dart';
+import 'package:flutter_coffee_app/commonComponents/route_generator.dart';
 
 void main() {
   runApp(const MyApp());
@@ -34,7 +34,8 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home: const Welcome(),
-      initialRoute: Routes.welcome,
+      initialRoute: "/Welcome",
+      onGenerateRoute: RouteGenerator.generateRoute,
     );
   }
 }
