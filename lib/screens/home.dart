@@ -7,7 +7,7 @@ import 'package:flutter_coffee_app/screens/widgets/category_item.dart';
 import 'package:flutter_coffee_app/screens/widgets/item.dart';
 
 class Home extends StatefulWidget {
-  const Home({super.key});
+  const Home({Key? key});
 
   @override
   State<Home> createState() => _HomeState();
@@ -16,187 +16,192 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   int selectedCategory = 0;
   List<String> list = ['Cappuccino', 'Machiato', 'Latte', 'Americano'];
+
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: const Color(0xffF9F9F9),
-      body: SingleChildScrollView(
-        child: Stack(
-          children: [
-            Container(
-              height: 280,
-              width: size.width,
-              decoration:
-                  const BoxDecoration(color: Color.fromARGB(255, 70, 69, 69)),
-            ),
-            Column(
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          return SingleChildScrollView(
+            child: Stack(
               children: [
-                Center(
-                  child: SizedBox(
-                    width: 315,
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: size.height * 0.07,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                Container(
+                  height: constraints.maxHeight * 0.4,
+                  width: double.infinity,
+                  decoration: const BoxDecoration(
+                      color: Color.fromARGB(255, 70, 69, 69)),
+                ),
+                Column(
+                  children: [
+                    Center(
+                      child: SizedBox(
+                        width: constraints.maxWidth * 0.8,
+                        child: Column(
                           children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                            SizedBox(
+                              height: constraints.maxHeight * 0.07,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(
-                                  "Location",
-                                  style: GoogleFonts.sora(
-                                      color: const Color(0xffb7b7b7),
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w400),
-                                ),
-                                Row(
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      "Bilzen Tanjungbalai",
+                                      "Location",
                                       style: GoogleFonts.sora(
-                                        color: Colors.white,
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w600,
-                                      ),
+                                          color: const Color(0xffb7b7b7),
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.w400),
                                     ),
-                                    const Icon(
-                                      Icons.arrow_downward,
-                                      color: Colors.white,
+                                    Row(
+                                      children: [
+                                        Text(
+                                          "Bilzen Tanjungbalai",
+                                          style: GoogleFonts.sora(
+                                            color: Colors.white,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                        const Icon(
+                                          Icons.arrow_downward,
+                                          color: Colors.white,
+                                        )
+                                      ],
                                     )
                                   ],
+                                ),
+                                SizedBox(
+                                  width: constraints.maxWidth * 0.12,
+                                  height: constraints.maxWidth * 0.12,
+                                  child: Image.asset(
+                                    "assets/images/avatar.jpg",
+                                    fit: BoxFit.fill,
+                                  ),
                                 )
                               ],
                             ),
                             SizedBox(
-                              width: 45,
-                              height: 45,
-                              child: Image.asset(
-                                "assets/images/avatar.jpg",
-                                fit: BoxFit.fill,
+                              height: constraints.maxHeight * 0.03,
+                            ),
+                            SizedBox(
+                              height: 50,
+                              child: TextFormField(
+                                decoration: InputDecoration(
+                                  filled: true,
+                                  fillColor: const Color(0xff313131),
+                                  contentPadding: const EdgeInsets.only(
+                                      top: 23, bottom: 2, right: 5),
+                                  enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(15)),
+                                  hintText: "Search",
+                                  hintStyle: GoogleFonts.sora(
+                                    color: const Color(0xff989898),
+                                  ),
+                                  prefixIcon: const Icon(
+                                    Iconsax.search_favorite_1,
+                                    color: Colors.white,
+                                    size: 20,
+                                  ),
+                                  suffixIcon: Container(
+                                    width: constraints.maxWidth * 0.08,
+                                    height: constraints.maxWidth * 0.08,
+                                    padding: const EdgeInsets.all(8),
+                                    decoration: BoxDecoration(
+                                      color: const Color(0xffC67C4E),
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    child: const Icon(
+                                      Iconsax.setting_2,
+                                      color: Colors.white,
+                                      size: 20,
+                                    ),
+                                  ),
+                                ),
                               ),
-                            )
+                            ),
+                            SizedBox(
+                              height: constraints.maxHeight * 0.02,
+                            ),
+                            SizedBox(
+                              width: constraints.maxWidth * 0.8,
+                              height: constraints.maxHeight * 0.25,
+                              child: CarouselSlider(
+                                options: CarouselOptions(
+                                  viewportFraction: 1,
+                                  enlargeFactor: 0.3,
+                                  height: constraints.maxHeight * 0.3,
+                                  enlargeCenterPage: true,
+                                  autoPlay: true,
+                                ),
+                                items: List.generate(
+                                  5,
+                                  (index) => const BannerCard(),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: constraints.maxHeight * 0.01,
+                            ),
+                            SizedBox(
+                              height: 40,
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                  children: List.generate(
+                                    list.length,
+                                    (index) => CategoryItem(
+                                      index: index,
+                                      title: list[index],
+                                      selectedCategory: selectedCategory,
+                                      onClick: () {
+                                        setState(
+                                            () => selectedCategory = index);
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
                           ],
                         ),
-                        SizedBox(
-                          height: size.height * 0.03,
-                        ),
-                        SizedBox(
-                          height: 50,
-                          child: TextFormField(
-                            decoration: InputDecoration(
-                              filled: true,
-                              fillColor: const Color(0xff313131),
-                              contentPadding: const EdgeInsets.only(
-                                  top: 23, bottom: 2, right: 5),
-                              enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(15)),
-                              hintText: "Search",
-                              hintStyle: GoogleFonts.sora(
-                                color: const Color(0xff989898),
-                              ),
-                              prefixIcon: const Icon(
-                                Iconsax.search_normal,
-                                color: Colors.white,
-                                size: 20,
-                              ),
-                              suffixIcon: Container(
-                                width: 44,
-                                height: 44,
-                                padding: const EdgeInsets.all(8),
-                                decoration: BoxDecoration(
-                                  color: const Color(0xffC67C4E),
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: const Icon(
-                                  Iconsax.setting_2,
-                                  color: Colors.white,
-                                  size: 20,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: size.height * 0.020,
-                        ),
-                        SizedBox(
-                          width: 315,
-                          height: 180,
-                          child: CarouselSlider(
-                            options: CarouselOptions(
-                              viewportFraction: 1,
-                              enlargeFactor: 0.3,
-                              height: size.height * 0.3,
-                              enlargeCenterPage: true,
-                              autoPlay: true,
-                            ),
-                            items: List.generate(
-                              5,
-                              (index) => const BannerCard(),
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: size.height * 0.01,
-                        ),
-                        SizedBox(
-                          height: 40,
-                          child: SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Row(
-                              children: List.generate(
-                                list.length,
-                                (index) => CategoryItem(
-                                  index: index,
-                                  title: list[index],
-                                  selectedCategory: selectedCategory,
-                                  onClick: () {
-                                    setState(() => selectedCategory = index);
-                                  },
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
-                  ),
+                    Container(
+                      height: constraints.maxWidth * 0.8,
+                      width: constraints.maxWidth * 0.9,
+                      alignment: Alignment.center,
+                      child: GridView(
+                        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                          maxCrossAxisExtent: constraints.maxWidth / 2,
+                          crossAxisSpacing: 15,
+                          mainAxisSpacing: 10,
+                          mainAxisExtent: constraints.maxWidth * 0.7,
+                        ),
+                        children: const [
+                          Item(
+                            image: "assets/images/1.png",
+                          ),
+                          Item(
+                            image: "assets/images/2.png",
+                          ),
+                          Item(
+                            image: "assets/images/3.png",
+                          ),
+                          Item(
+                            image: "assets/images/4.png",
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
                 ),
-                Container(
-                  height: 330,
-                  width: 330,
-                  alignment: Alignment.center,
-                  child: GridView(
-                    gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                      maxCrossAxisExtent: size.width / 2,
-                      crossAxisSpacing: 15,
-                      mainAxisSpacing: 10,
-                      mainAxisExtent: 239,
-                    ),
-                    children: const [
-                      Item(
-                        image: "assets/images/1.jpg",
-                      ),
-                      Item(
-                        image: "assets/images/2.png",
-                      ),
-                      Item(
-                        image: "assets/images/3.png",
-                      ),
-                      Item(
-                        image: "assets/images/4.png",
-                      ),
-                    ],
-                  ),
-                )
               ],
             ),
-          ],
-        ),
+          );
+        },
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: 0,
