@@ -13,7 +13,7 @@ class _WelcomeState extends State<Welcome> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 10, 3, 0),
+      backgroundColor: Color.fromARGB(255, 0, 0, 0),
       body: SizedBox(
         width: size.width,
         height: size.height,
@@ -61,7 +61,7 @@ class _WelcomeState extends State<Welcome> {
                     ),
                     SizedBox(
                       height: 70,
-                      width: size.width * .9,
+                      width: size.width * .7,
                       child: ElevatedButton.icon(
                         icon: const Icon(
                           Icons.mail,
