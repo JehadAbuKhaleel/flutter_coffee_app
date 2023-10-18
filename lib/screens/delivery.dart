@@ -19,7 +19,7 @@ class _DeliveryState extends State<Delivery> {
         width: size.width,
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("assets/images/map.png"),
+            image: AssetImage("assets/images/map.PNG"),
           ),
         ),
         child: Column(

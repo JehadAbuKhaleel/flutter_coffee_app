@@ -4,6 +4,7 @@ import 'package:flutter_coffee_app/screens/home.dart';
 import 'package:flutter_coffee_app/screens/order.dart';
 import 'package:flutter_coffee_app/screens/welcome.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_coffee_app/screens/widgets/item.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -20,12 +21,32 @@ class RouteGenerator {
         );
       case "/Detail":
         return buildRoute(
-          const Detail(),
+          const Detail(
+            item: Item(
+              imageUrl: '',
+              name: '',
+              description: '',
+              price: "4.53",
+              additions: '',
+              cname: '',
+              size: '',
+            ),
+          ),
           settings: settings,
         );
       case "/Order":
         return buildRoute(
-          const Order(),
+          const Order(
+            item: Item(
+              imageUrl: '',
+              name: '',
+              description: '',
+              price: " 4.53",
+              additions: '',
+              cname: '',
+              size: '',
+            ),
+          ),
           settings: settings,
         );
       case "/Delivery":
