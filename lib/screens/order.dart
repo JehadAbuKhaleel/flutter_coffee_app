@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_coffee_app/screens/widgets/item.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 
 class Order extends StatefulWidget {
-  const Order({Key? key});
+  final Item item;
+  const Order({required this.item, Key? key}) : super(key: key);
 
   @override
   State<Order> createState() => _OrderState();
@@ -66,8 +68,8 @@ class _OrderState extends State<Order> {
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
                           color: selectedTab == 0
-                              ? Color(0xffC67C4E)
-                              : Color(0xfffff),
+                              ? const Color(0xffC67C4E)
+                              : const Color(0x000fffff),
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: Text(
@@ -93,8 +95,8 @@ class _OrderState extends State<Order> {
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
                           color: selectedTab == 1
-                              ? Color(0xffC67C4E)
-                              : Color(0xfffff),
+                              ? const Color(0xffC67C4E)
+                              : const Color(0x000fffff),
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: Text(
@@ -236,7 +238,7 @@ class _OrderState extends State<Order> {
               const SizedBox(
                 height: 20,
               ),
-              Container(
+              SizedBox(
                 width: containerWidth,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -250,7 +252,7 @@ class _OrderState extends State<Order> {
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Image.asset(
-                            "assets/images/1.png",
+                            widget.item.imageUrl,
                             fit: BoxFit.contain,
                           ),
                         ),
@@ -261,7 +263,7 @@ class _OrderState extends State<Order> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Cappuccino",
+                              widget.item.name,
                               style: GoogleFonts.sora(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
@@ -272,7 +274,7 @@ class _OrderState extends State<Order> {
                               height: 4,
                             ),
                             Text(
-                              "with Chocolate",
+                              widget.item.additions,
                               style: GoogleFonts.sora(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w400,
@@ -292,11 +294,12 @@ class _OrderState extends State<Order> {
                           decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(50),
-                              border: Border.all(color: Color(0xffEAEAEA))),
+                              border:
+                                  Border.all(color: const Color(0xffEAEAEA))),
                           child: Text(
                             "-",
                             style: GoogleFonts.sora(
-                              color: Color(0xffAAADB0),
+                              color: const Color(0xffAAADB0),
                               fontSize: 18,
                               fontWeight: FontWeight.w700,
                             ),
@@ -330,7 +333,7 @@ class _OrderState extends State<Order> {
                           child: Text(
                             "+",
                             style: GoogleFonts.sora(
-                              color: Color.fromARGB(255, 0, 0, 0),
+                              color: const Color.fromARGB(255, 0, 0, 0),
                               fontSize: 18,
                               fontWeight: FontWeight.w500,
                             ),
@@ -371,7 +374,7 @@ class _OrderState extends State<Order> {
                   children: [
                     Row(
                       children: [
-                        Icon(
+                        const Icon(
                           Iconsax.discount_shape,
                           size: 24,
                           color: Color(0xffC67C4E),
@@ -388,7 +391,7 @@ class _OrderState extends State<Order> {
                         ),
                       ],
                     ),
-                    Icon(
+                    const Icon(
                       Icons.chevron_right,
                       size: 20,
                     )
@@ -398,7 +401,7 @@ class _OrderState extends State<Order> {
               const SizedBox(
                 height: 20,
               ),
-              Container(
+              SizedBox(
                 width: containerWidth,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -424,7 +427,7 @@ class _OrderState extends State<Order> {
                           ),
                         ),
                         Text(
-                          "\$ 4.53",
+                          "\$ ${widget.item.price}",
                           style: GoogleFonts.sora(
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
@@ -490,7 +493,7 @@ class _OrderState extends State<Order> {
                           ),
                         ),
                         Text(
-                          "\$ 5.53",
+                          "\$ ${(double.parse(widget.item.price) + 1).toString()}",
                           style: GoogleFonts.sora(
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
@@ -503,13 +506,13 @@ class _OrderState extends State<Order> {
               ),
               Container(
                 width: size.width,
-                height: size.height * 0.3,
+                height: size.height * 0.2,
                 padding: const EdgeInsets.only(
                   top: 25,
                 ),
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: Colors.white,
-                  borderRadius: const BorderRadius.only(
+                  borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(24),
                     topRight: Radius.circular(24),
                   ),
@@ -562,7 +565,7 @@ class _OrderState extends State<Order> {
                                       width: 10,
                                     ),
                                     Text(
-                                      "\$ 5.53",
+                                      "\$ ${(double.parse(widget.item.price) + 1).toString()}",
                                       style: GoogleFonts.sora(
                                         fontSize: 12,
                                         fontWeight: FontWeight.w400,

@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_coffee_app/screens/detail.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_coffee_app/screens/widgets/banner.dart';
 import 'package:flutter_coffee_app/screens/widgets/category_item.dart';
 import 'package:flutter_coffee_app/screens/widgets/item.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Home extends StatefulWidget {
-  const Home({Key? key});
+  const Home({super.key});
 
   @override
   State<Home> createState() => _HomeState();
@@ -15,12 +17,58 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int selectedCategory = 0;
-  List<String> list = ['Cappuccino', 'Machiato', 'Latte', 'Americano'];
+  List<String> categories = [];
+  List<Item> items = [];
+
+  TextEditingController searchController = TextEditingController();
+  List<Item> filteredItems = [];
+
+  void navigateToItemDetail(Item item) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => Detail(item: item),
+      ),
+    );
+  }
+
+  Future<void> fetchData() async {
+    final firestore = FirebaseFirestore.instance;
+
+    final categoriesQuery = await firestore.collection('categories').get();
+    categories = categoriesQuery.docs
+        .map((doc) => doc.data()['name'] as String)
+        .toList();
+
+    final itemsQuery = await firestore.collection('coffeeItems').get();
+    items = itemsQuery.docs.map((doc) {
+      final data = doc.data();
+      return Item(
+        imageUrl: data['imageUrl'],
+        name: data['name'],
+        additions: data['additions'],
+        description: data['description'],
+        price: data['price'],
+        size: data['size'],
+        cname: data['cname'],
+      );
+    }).toList();
+    filteredItems = items;
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+    filteredItems = List.from(items);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xffF9F9F9),
+      resizeToAvoidBottomInset: false,
       body: LayoutBuilder(
         builder: (context, constraints) {
           return SingleChildScrollView(
@@ -89,6 +137,23 @@ class _HomeState extends State<Home> {
                             SizedBox(
                               height: 50,
                               child: TextFormField(
+                                style: const TextStyle(
+                                  color: Color.fromARGB(255, 206, 142, 126),
+                                ),
+                                controller: searchController,
+                                onChanged: (value) {
+                                  setState(() {
+                                    if (value.isEmpty) {
+                                      filteredItems = List.from(items);
+                                    } else {
+                                      filteredItems = items
+                                          .where((item) => item.name
+                                              .toLowerCase()
+                                              .contains(value.toLowerCase()))
+                                          .toList();
+                                    }
+                                  });
+                                },
                                 decoration: InputDecoration(
                                   filled: true,
                                   fillColor: const Color(0xff313131),
@@ -151,14 +216,22 @@ class _HomeState extends State<Home> {
                                 scrollDirection: Axis.horizontal,
                                 child: Row(
                                   children: List.generate(
-                                    list.length,
+                                    categories.length,
                                     (index) => CategoryItem(
                                       index: index,
-                                      title: list[index],
+                                      title: categories[index],
                                       selectedCategory: selectedCategory,
                                       onClick: () {
                                         setState(
                                             () => selectedCategory = index);
+                                        filteredItems = List.from(items);
+                                        if (selectedCategory != 0) {
+                                          filteredItems = items
+                                              .where((item) =>
+                                                  item.cname ==
+                                                  categories[selectedCategory])
+                                              .toList();
+                                        }
                                       },
                                     ),
                                   ),
@@ -177,23 +250,25 @@ class _HomeState extends State<Home> {
                         gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                           maxCrossAxisExtent: constraints.maxWidth / 2,
                           crossAxisSpacing: 15,
-                          mainAxisSpacing: 10,
-                          mainAxisExtent: constraints.maxWidth * 0.7,
+                          mainAxisSpacing: 15,
+                          mainAxisExtent: constraints.maxWidth * 0.6,
                         ),
-                        children: const [
-                          Item(
-                            image: "assets/images/1.png",
-                          ),
-                          Item(
-                            image: "assets/images/2.png",
-                          ),
-                          Item(
-                            image: "assets/images/3.png",
-                          ),
-                          Item(
-                            image: "assets/images/4.png",
-                          ),
-                        ],
+                        children: filteredItems
+                            .map((item) => GestureDetector(
+                                  onTap: () {
+                                    navigateToItemDetail(item);
+                                  },
+                                  child: Item(
+                                    imageUrl: item.imageUrl,
+                                    name: item.name,
+                                    additions: item.additions,
+                                    description: item.description,
+                                    price: item.price,
+                                    size: item.size,
+                                    cname: item.cname,
+                                  ),
+                                ))
+                            .toList(),
                       ),
                     )
                   ],
@@ -232,7 +307,17 @@ class _HomeState extends State<Home> {
         onTap: (index) {
           setState(() {
             index = index;
-            // Navigate to the selected page here, e.g., Navigator.push...
+            switch (index) {
+              case 0:
+                Navigator.pushNamed(context, "/Home");
+              case 1:
+                Navigator.pushNamed(context, "/Home");
+              case 2:
+                Navigator.pushNamed(context, "/Order");
+              case 3:
+                Navigator.pushNamed(context, "/Delivery");
+                break;
+            }
           });
         },
       ),

@@ -3,11 +3,23 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 
 class Item extends StatefulWidget {
-  final String image;
+  final String imageUrl;
+  final String name;
+  final String additions;
+  final String description;
+  final String price;
+  final String size;
+  final String cname;
 
   const Item({
     super.key,
-    required this.image,
+    required this.imageUrl,
+    required this.name,
+    required this.additions,
+    required this.description,
+    required this.price,
+    required this.size,
+    required this.cname,
   });
 
   @override
@@ -40,7 +52,7 @@ class _ItemState extends State<Item> {
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                        image: AssetImage(widget.image),
+                        image: AssetImage(widget.imageUrl),
                         fit: BoxFit.fill,
                         alignment: Alignment.center,
                         scale: 1),
@@ -84,25 +96,19 @@ class _ItemState extends State<Item> {
                 ),
               ],
             ),
-            GestureDetector(
-              onTap: () => Navigator.pushNamed(
-                context,
-                "/Detail",
-              ),
-              child: Text(
-                "Cappucino",
-                style: GoogleFonts.sora(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                  color: const Color(0xff2F2D2C),
-                ),
+            Text(
+              widget.name,
+              style: GoogleFonts.sora(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                color: const Color(0xff2F2D2C),
               ),
             ),
             const SizedBox(
               height: 4,
             ),
             Text(
-              'with Chocolate',
+              widget.additions,
               style: GoogleFonts.sora(
                 fontSize: 11,
                 fontWeight: FontWeight.w400,
@@ -116,31 +122,25 @@ class _ItemState extends State<Item> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "\$ 4.53",
+                  "\$ ${widget.price}",
                   style: GoogleFonts.sora(
                     fontSize: 18,
                     fontWeight: FontWeight.w600,
                     color: const Color(0xff2F4B4E),
                   ),
                 ),
-                GestureDetector(
-                  onTap: () => Navigator.pushNamed(
-                    context,
-                    "/Detail",
+                Container(
+                  width: 30,
+                  height: 30,
+                  decoration: BoxDecoration(
+                    color: const Color(0xffC67C4E),
+                    borderRadius: BorderRadius.circular(10),
                   ),
-                  child: Container(
-                    width: 30,
-                    height: 30,
-                    decoration: BoxDecoration(
-                      color: const Color(0xffC67C4E),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: const Icon(
-                      Icons.add,
-                      color: Colors.white,
-                    ),
+                  child: const Icon(
+                    Icons.add,
+                    color: Colors.white,
                   ),
-                )
+                ),
               ],
             )
           ],

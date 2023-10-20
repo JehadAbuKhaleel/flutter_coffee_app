@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_coffee_app/screens/order.dart';
+import 'package:flutter_coffee_app/screens/widgets/item.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:flutter_coffee_app/screens/widgets/coffee_size_button.dart';
 
 class Detail extends StatefulWidget {
-  const Detail({super.key});
+  final Item item;
+  const Detail({required this.item, Key? key}) : super(key: key);
 
   @override
   State<Detail> createState() => _DetailState();
@@ -12,6 +15,14 @@ class Detail extends StatefulWidget {
 
 class _DetailState extends State<Detail> {
   int selectedSize = 1;
+  void navigateToItemOrder(Item item) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => Order(item: item),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,8 +76,9 @@ class _DetailState extends State<Detail> {
               alignment: Alignment.center,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(16),
-                image: const DecorationImage(
-                  image: AssetImage("assets/images/1.png"),
+                image: DecorationImage(
+                  image: AssetImage(widget.item.imageUrl),
+                  fit: BoxFit.cover,
                 ),
               ),
             ),
@@ -80,22 +92,22 @@ class _DetailState extends State<Detail> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    "Cappuccino",
+                    widget.item.name,
                     style: GoogleFonts.sora(
                       fontSize: 20,
                       fontWeight: FontWeight.w600,
-                      color: Color(0xff2F2D2C),
+                      color: const Color(0xff2F2D2C),
                     ),
                   ),
                   const SizedBox(
                     height: 8,
                   ),
                   Text(
-                    "with Chocolate",
+                    widget.item.additions,
                     style: GoogleFonts.sora(
                       fontSize: 12,
                       fontWeight: FontWeight.w400,
-                      color: Color(0xff9B9B9B),
+                      color: const Color(0xff9B9B9B),
                     ),
                   ),
                 ],
@@ -198,10 +210,9 @@ class _DetailState extends State<Detail> {
                       RichText(
                         textAlign: TextAlign.justify,
                         text: TextSpan(
-                          text:
-                              "A cappuccino is an approximately 150 ml (5 oz) beverage, with 25 ml of espresso coffee and 85ml of fresh milk the fo.. ",
+                          text: widget.item.description,
                           style: GoogleFonts.aDLaMDisplay(
-                              color: Color.fromARGB(255, 156, 156, 156),
+                              color: const Color.fromARGB(255, 156, 156, 156),
                               fontWeight: FontWeight.w400,
                               fontSize: 14,
                               height: 1.64),
@@ -295,7 +306,7 @@ class _DetailState extends State<Detail> {
                                 color: const Color(0xff9B9B9B)),
                           ),
                           Text(
-                            "\$ 4.53",
+                            "\$ ${widget.item.price}",
                             style: GoogleFonts.sora(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w600,
@@ -307,8 +318,7 @@ class _DetailState extends State<Detail> {
                         width: size.width * 0.4,
                         height: 62,
                         child: ElevatedButton(
-                          onPressed: () =>
-                              Navigator.pushNamed(context, "/Order"),
+                          onPressed: () => navigateToItemOrder(widget.item),
                           style: ElevatedButton.styleFrom(
                             padding: EdgeInsets.symmetric(
                               horizontal: size.width * 0.05,
